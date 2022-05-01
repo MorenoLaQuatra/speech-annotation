@@ -7,7 +7,7 @@ Given the input text annotate it with following data:
 
 **Requirements** are listed on `requirements.txt`but you also need a system with `ffmpeg` installed for `webm`to `wav` conversion.
 
-**CAVEAT:** the project is created for a basic and specific use cases (even metadata annotations are just referred to the use-case).
+**CAVEAT:** the project is created for a basic and specific use-case (even metadata annotations are just referred to the use-case).
 
 # Usage
 1. `git clone https://github.com/MorenoLaQuatra/speech-annotation.git`
