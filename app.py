@@ -2,13 +2,14 @@
 from flask import Flask, render_template, request, jsonify, make_response, redirect
 import pandas as pd
 import subprocess
-import glob, os
+import glob, os, json
 
 app = Flask(__name__)
 
 AUDIO_BASE_PATH = "annotations/audio/"
 TEXT_BASE_PATH = "annotations/text/"
 WEBM_BASE_PATH = "annotations/webm/"
+ANNOTATIONS_BASE_PATH = "annotations/json/"
 
 def read_dataset(path):
     dataset = pd.read_json(path_or_buf=path, lines=True)
@@ -76,16 +77,30 @@ def convert_webm_to_wav(file, filename):
 def send_recording():
     rec = request.files.get("file")
     title = request.form.get("title")
+    
     user_gender = request.form.get("user-gender")
     user_age_group = request.form.get("user-age_group")
     user_region = request.form.get("user-region")
+    annotation_data = {
+        "user_gender": user_gender,
+        "user_region": user_region,
+        "user_age_group": user_age_group,
+    }
+
     sentence_id = int(request.form.get("id"))
     filename = str(sentence_id)
+
     fw = open(f"{TEXT_BASE_PATH}{filename}.txt", "w", encoding="utf-8")
     fw.write(title)
     fw.close()
+
     rec.save(f"{WEBM_BASE_PATH}{filename}.webm")
     convert_webm_to_wav(f"{WEBM_BASE_PATH}{filename}.webm", filename=filename)
+
+    fw = open(f"{ANNOTATIONS_BASE_PATH}{filename}.json", 'w')
+    json.dump(annotation_data, fw)
+    fw.close()
+
     DATASET.at[sentence_id, 'annotated'] = True
     data = {'message': 'Done', 'code': 'SUCCESS'}
     res = make_response(jsonify(data), 201)  
