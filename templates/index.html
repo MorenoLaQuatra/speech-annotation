@@ -1,17 +1,85 @@
 {% extends "layout.html.j2" %} {% block title %} DBDMG - Italian ASR {% endblock %} {% block body %}
 <br><br>
-<h1>Ciao!</h1>
-<p>Aiutaci ad annotare!</p>
-<p>Leggi la frase seguente</p>
-<br>
-<br>
-<h3 id="id-sentence">{{sentence_id}}</h3>
-<h3 id="target-sentence">{{sentence_text}}</h3>
+<h1>👋 Ciao!</h1>
+<p>Aiutaci ad annotare 🎤 </p>
+<p><b>Situazione attuale: </b>{{ann_done}} / {{ann_all}}</p>
 
+
+<select name="user-region" id="user-region">
+    <option {% if user_region is none %} selected {% endif %} value=""></option>
+    <option {% if user_region == "Abruzzo" %} selected {% endif %} value="Abruzzo">Abruzzo</option>
+    <option {% if user_region == "Basilicata" %} selected {% endif %} value="Basilicata">Basilicata</option>
+    <option {% if user_region == "Calabria" %} selected {% endif %} value="Calabria">Calabria</option>
+    <option {% if user_region == "Campania" %} selected {% endif %} value="Campania">Campania</option>
+    <option {% if user_region == "Emilia" %} selected {% endif %} value="Emilia">Emilia</option>
+    <option {% if user_region == "Friuli Venezia Giulia" %} selected {% endif %} value="Friuli Venezia Giulia">Friuli Venezia Giulia</option>
+    <option {% if user_region == "Lazio" %} selected {% endif %} value="Lazio">Lazio</option>
+    <option {% if user_region == "Liguria" %} selected {% endif %} value="Liguria">Liguria</option>
+    <option {% if user_region == "Lombardia" %} selected {% endif %} value="Lombardia">Lombardia</option>
+    <option {% if user_region == "Marche" %} selected {% endif %} value="Marche">Marche</option>
+    <option {% if user_region == "Molise" %} selected {% endif %} value="Molise">Molise</option>
+    <option {% if user_region == "Piemonte" %} selected {% endif %} value="Piemonte">Piemonte</option>
+    <option {% if user_region == "Puglia" %} selected {% endif %} value="Puglia">Puglia</option>
+    <option {% if user_region == "Sardegna" %} selected {% endif %} value="Sardegna">Sardegna</option>
+    <option {% if user_region == "Sicilia" %} selected {% endif %} value="Sicilia">Sicilia</option>
+    <option {% if user_region == "Toscana" %} selected {% endif %} value="Toscana">Toscana</option>
+    <option {% if user_region == "Trentino Alto Adige" %} selected {% endif %} value="Trentino Alto Adige">Trentino Alto Adige</option>
+    <option {% if user_region == "Umbria" %} selected {% endif %} value="Umbria">Umbria</option>
+    <option {% if user_region == "Valle d'Aosta" %} selected {% endif %} value="Valle d'Aosta">Valle d'Aosta</option>
+    <option {% if user_region == "Veneto" %} selected {% endif %} value="Veneto">Veneto</option>
+    <option {% if user_region == "other" %} selected {% endif %} value="other">prefer not to answer</option>
+</select>
+
+
+<select name="user-age_group" id="user-age_group">
+    <option {% if user_age_group is none %} selected {% endif %} value=""></option>
+    <option {% if user_age_group == '00' %} selected {% endif %} value="00">00</option>
+    <option {% if user_age_group == '01-04' %} selected {% endif %} value="01-04">01-04</option>
+    <option {% if user_age_group == '05-09' %} selected {% endif %} value="05-09">05-09</option>
+    <option {% if user_age_group == '10-14' %} selected {% endif %} value="10-14">10-14</option>
+    <option {% if user_age_group == '15-19' %} selected {% endif %} value="15-19">15-19</option>
+    <option {% if user_age_group == '20-24' %} selected {% endif %} value="20-24">20-24</option>
+    <option {% if user_age_group == '25-29' %} selected {% endif %} value="25-29">25-29</option>
+    <option {% if user_age_group == '30-34' %} selected {% endif %} value="30-34">30-34</option>
+    <option {% if user_age_group == '35-39' %} selected {% endif %} value="35-39">35-39</option>
+    <option {% if user_age_group == '40-44' %} selected {% endif %} value="40-44">40-44</option>
+    <option {% if user_age_group == '45-49' %} selected {% endif %} value="45-49">45-49</option>
+    <option {% if user_age_group == '50-54' %} selected {% endif %} value="50-54">50-54</option>
+    <option {% if user_age_group == '55-59' %} selected {% endif %} value="55-59">55-59</option>
+    <option {% if user_age_group == '60-64' %} selected {% endif %} value="60-64">60-64</option>
+    <option {% if user_age_group == '65-69' %} selected {% endif %} value="65-69">65-69</option>
+    <option {% if user_age_group == '70-74' %} selected {% endif %} value="70-74">70-74</option>
+    <option {% if user_age_group == '75-79' %} selected {% endif %} value="75-79">75-79</option>
+    <option {% if user_age_group == '80-84' %} selected {% endif %} value="80-84">80-84</option>
+    <option {% if user_age_group == '85+' %} selected {% endif %} value="85+">85+</option>
+    <option {% if user_age_group == 'other' %} selected {% endif %} value="other">prefer not to answer</option>
+</select>
+
+<select name="user-gender" id="user-gender">
+    <option {% if user_gender is none %} selected {% endif %} value=""></option>
+    <option {% if user_gender == 'male' %} selected {% endif %} value="male">male</option>
+    <option {% if user_gender == 'female' %} selected {% endif %} value="female">female</option>
+    <option {% if user_gender == 'not-binary' %} selected {% endif %} value="not-binary">not-binary</option>
+    <option {% if user_gender == 'other' %} selected {% endif %} value="other">prefer not to answer</option>
+</select>
+
+<p>ID:
+    <div id="id-sentence">{{sentence_id}}</div>
+</p>
+
+<br>
+<p>Leggi la frase seguente</p>
+
+<h4 id="target-sentence">{{sentence_text}}</h4>
+<br>
+<br>
 <div id="controls">
-    <button id="startRecording">Start recording</button>
+    <button id="startRecording">Start recording</button> &nbsp;&nbsp;
     <button id="stopRecording" disabled>Stop recording</button>
 </div>
+
+
+
 
 <br>
 <br>
@@ -88,6 +156,9 @@
         var form = new FormData();
         form.append('file', blob, 'file');
         form.append('title', document.getElementById("target-sentence").innerText);
+        form.append('user-region', document.getElementById("user-region").value);
+        form.append('user-age_group', document.getElementById("user-age_group").value);
+        form.append('user-gender', document.getElementById("user-gender").value);
         form.append('id', document.getElementById("id-sentence").innerText);
 
         console.log(blob)
@@ -105,7 +176,7 @@
             startRecording.disabled = true;
             stopRecording.disabled = true;
             if (response.message == "Done") {
-                location.reload();
+                window.location.replace("/");
             } else {
                 alert("Error. Please refresh the page.")
             }
