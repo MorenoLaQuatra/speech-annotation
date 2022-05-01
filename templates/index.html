@@ -1,0 +1,131 @@
+{% extends "layout.html.j2" %} {% block title %} DBDMG - Italian ASR {% endblock %} {% block body %}
+<br><br>
+<h1>Ciao!</h1>
+<p>Aiutaci ad annotare!</p>
+<p>Leggi la frase seguente</p>
+<br>
+<br>
+<h3 id="id-sentence">{{sentence_id}}</h3>
+<h3 id="target-sentence">{{sentence_text}}</h3>
+
+<div id="controls">
+    <button id="startRecording">Start recording</button>
+    <button id="stopRecording" disabled>Stop recording</button>
+</div>
+
+<br>
+<br>
+<br>
+
+<div id="audio-div">
+
+</div>
+
+<br>
+<button type="button" onclick="sendData()" id="sendDataButton">Submit</button>
+
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+    navigator
+        .mediaDevices
+        .getUserMedia({
+            audio: true
+        })
+        .then(stream => {
+            handlerFunction(stream)
+        });
+
+    function handlerFunction(stream) {
+
+        var options = {
+            mimeType: 'audio/webm;codecs=opus'
+        }
+
+
+        rec = new MediaRecorder(stream, options);
+        rec.ondataavailable = e => {
+            audioChunks.push(e.data);
+            if (rec.state == "inactive") {
+                let blob = new Blob(audioChunks, {
+                    type: 'audio/webm'
+                });
+                var url = URL.createObjectURL(blob);
+
+                var div = document.getElementById('audio-div');
+
+                if (document.contains(document.getElementById("audio-container"))) {
+                    document.getElementById("audio-container").remove();
+                }
+
+                var container = document.createElement('audio');
+                container.setAttribute("id", "audio-container")
+                container.setAttribute("name", "recording")
+                container.controls = true
+
+                var source = document.createElement('source');
+                div.appendChild(container)
+                container.appendChild(source);
+
+                source.setAttribute('src', url);
+                source.setAttribute('type', 'audio/mpeg');
+
+                console.log({
+                    src: source.getAttribute('src'),
+                    type: source.getAttribute('type'),
+                });
+                //sendData(blob);
+            }
+        }
+    }
+
+    function sendData() {
+        sendDataButton.disabled = true;
+        let blob = new Blob(audioChunks, {
+            type: 'audio/webm'
+        });
+        var form = new FormData();
+        form.append('file', blob, 'file');
+        form.append('title', document.getElementById("target-sentence").innerText);
+        form.append('id', document.getElementById("id-sentence").innerText);
+
+        console.log(blob)
+
+        //Chrome inspector shows that the post data includes a file and a title.
+        $.ajax({
+            type: 'POST',
+            url: '/send_recording',
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false
+        }).done(function(response) {
+            console.log(response);
+            startRecording.disabled = true;
+            stopRecording.disabled = true;
+            if (response.message == "Done") {
+                location.reload();
+            } else {
+                alert("Error. Please refresh the page.")
+            }
+
+        });
+    }
+
+    startRecording.onclick = e => {
+        console.log('Recording are started..');
+        startRecording.disabled = true;
+        stopRecording.disabled = false;
+        audioChunks = [];
+        rec.start();
+    };
+
+    stopRecording.onclick = e => {
+        console.log("Recording are stopped.");
+        startRecording.disabled = false;
+        stopRecording.disabled = true;
+        rec.stop();
+    };
+</script>
+{% endblock %}
