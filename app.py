@@ -65,4 +65,4 @@ def send_recording():
     return make_response(jsonify(data), 201)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5957)
+    app.run(debug=True, port=9876)
