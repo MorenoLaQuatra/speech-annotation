@@ -12,6 +12,7 @@ Given the input text annotate it with following data:
 2. `cd speech-annotation`
 3. `pip install -r requirements.txt`
 4. Install [ffmpeg](https://ffmpeg.org/download.html)
+5. Create a file `allowed_users.txt` containing usernames of users that can annotate data (no passwords). Each username in a separate line.
 6. `python app.py`
 7. Go to `localhost:9876` in your browser
 8. Find annotations in `speech-annotation/annotations/audio/`
