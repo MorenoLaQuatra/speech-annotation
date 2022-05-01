@@ -1,3 +1,5 @@
 ./annotations/audio/*
 ./annotations/webm/*
 ./annotations/text/*
+allowed_users.txt
+
