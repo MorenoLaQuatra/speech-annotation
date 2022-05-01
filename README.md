@@ -15,7 +15,7 @@ Basic and simple web app for audio annotations
 
 
 # Todo:
-[ ] Login Wall
-[ ] Collection of metadata
-[ ] Support for other datasets (?) - currently italian split of MASSIVE
-[ ] ...
+- [ ] Login Wall
+- [ ] Collection of metadata
+- [ ] Support for other datasets (?) - currently italian split of MASSIVE
+- [ ] ...
