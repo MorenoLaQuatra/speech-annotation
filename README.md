@@ -1,5 +1,9 @@
 # speech-annotation
-Basic and simple web app for audio annotations
+Basic and simple web app for text-to-speech audio annotations.
+
+Given the input text annotate it with following data:
+- audio recording (in `annotations/audio/ID_FILE.wav`)
+- speaker metadata (in `annotations/json/ID_FILE.json`)
 
 **Requirements** are listed on `requirements.txt`but you also need a system with `ffmpeg` installed for `webm`to `wav` conversion
 
@@ -15,7 +19,6 @@ Basic and simple web app for audio annotations
 
 
 # Todo:
-- [ ] Login Wall
-- [ ] Collection of metadata
+- [x] Login Wall - `allowed_users.txt` contains the list of usernames (no password)
+- [x] Collection of metadata - in `annotations/json/ID_FILE.json`
 - [ ] Support for other datasets (?) - currently italian split of MASSIVE
-- [ ] ...
