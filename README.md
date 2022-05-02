@@ -19,6 +19,8 @@ Given the input text annotate it with following data:
 7. Go to `localhost:9876` in your browser
 8. Find annotations in `speech-annotation/annotations/audio/`
 
+If you want to run it over internet execute it with the following command: `flask run --host=0.0.0.0 --port=9876 --cert=adhoc`, SSL connection is required to access user microphone.
+
 
 
 # Todo:
